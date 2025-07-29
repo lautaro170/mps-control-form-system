@@ -48,4 +48,14 @@ class FormService{
 
         return $form;
     }
+
+    public function completeForm(\App\Models\Form $form, $json_values): \App\Models\Form
+    {
+        $form->status = FormStatusEnum::COMPLETED_NOT_SENT;
+        $form->json_values = $json_values;
+        $form->completed_at = now();
+        $form->save();
+
+        return $form;
+    }
 }

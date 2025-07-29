@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\FormStatusEnum;
 use App\Enums\FormTypeEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int $id
  * @property string $description
+ * @property string $json_values
  * @property FormStatusEnum $status
  * @property int $form_template_id
  * @property int $client_id
@@ -22,10 +24,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Form extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
     protected $fillable = [
         'description',
         'status',
+        'json_values',
         'created_by',
         'form_template_id',
         'client_id',

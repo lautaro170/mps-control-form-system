@@ -146,4 +146,51 @@ class FormServiceTest extends TestCase
             'description' => 'Test description',
         ]);
     }
+
+    public function test_complete_form_successfully()
+    {
+        $user = \App\Models\User::factory()->create();
+        $this->actingAs($user);
+        $client = \App\Models\Client::factory()->create();
+        $template = \App\Models\FormTemplate::factory()->create();
+        $form = \App\Models\Form::factory()->create([
+            'client_id' => $client->id,
+            'form_template_id' => $template->id,
+            'user_id' => $user->id,
+            'created_by' => $user->id,
+            'status' => \App\Enums\FormStatusEnum::PENDING,
+        ]);
+        $service = new \App\Services\FormService();
+        $json_values = json_encode(['foo' => 'bar', 'baz' => 123]);
+        $completedForm = $service->completeForm($form, $json_values);
+        $this->assertEquals(\App\Enums\FormStatusEnum::COMPLETED_NOT_SENT, $completedForm->status);
+        $this->assertEquals($json_values, $completedForm->json_values);
+        $this->assertNotNull($completedForm->completed_at);
+        $this->assertDatabaseHas('forms', [
+            'id' => $form->id,
+            'status' => \App\Enums\FormStatusEnum::COMPLETED_NOT_SENT,
+            'json_values' => $json_values,
+        ]);
+    }
+
+    public function test_complete_form_overwrites_previous_values()
+    {
+        $user = \App\Models\User::factory()->create();
+        $this->actingAs($user);
+        $client = \App\Models\Client::factory()->create();
+        $template = \App\Models\FormTemplate::factory()->create();
+        $form = \App\Models\Form::factory()->create([
+            'client_id' => $client->id,
+            'form_template_id' => $template->id,
+            'user_id' => $user->id,
+            'created_by' => $user->id,
+            'status' => \App\Enums\FormStatusEnum::PENDING,
+            'json_values' => json_encode(['old' => 'value']),
+        ]);
+        $service = new \App\Services\FormService();
+        $new_json_values = json_encode(['new' => 'value']);
+        $completedForm = $service->completeForm($form, $new_json_values);
+        $this->assertEquals($new_json_values, $completedForm->json_values);
+        $this->assertNotEquals(json_encode(['old' => 'value']), $completedForm->json_values);
+    }
 }
