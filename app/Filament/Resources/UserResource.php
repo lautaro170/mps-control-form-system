@@ -19,6 +19,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationLabel = 'Usuarios';
+    protected static ?string $pluralModelLabel = 'Usuario';
+    protected static ?string $modelLabel = 'Usuario';
 
 
     public static function form(Form $form): Form
