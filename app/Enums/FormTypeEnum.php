@@ -8,7 +8,7 @@ Enum FormTypeEnum: string
     public function label(): string
     {
         return match ($this) {
-            self::QUALITY => 'Quality',
+            self::QUALITY => 'Calidad',
         };
     }
 }

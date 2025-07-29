@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property string $description
+ * @property FormStatusEnum $status
+ * @property int $form_template_id
+ * @property int $client_id
+ * @property int $user_id
+ * @property int $created_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $completed_at
+ */
 class Form extends Model
 {
     use SoftDeletes;
@@ -15,6 +27,9 @@ class Form extends Model
         'description',
         'status',
         'created_by',
+        'form_template_id',
+        'client_id',
+        'user_id',
     ];
 
     protected $casts = [
