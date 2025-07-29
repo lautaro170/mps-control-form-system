@@ -41,4 +41,24 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Assign the Admin role to the user.
+     */
+    public function admin(): static
+    {
+        return $this->afterCreating(function ($user) {
+            $user->assignRole('Admin');
+        });
+    }
+
+    /**
+     * Assign the Técnico role to the user.
+     */
+    public function tecnico(): static
+    {
+        return $this->afterCreating(function ($user) {
+            $user->assignRole('Técnico');
+        });
+    }
 }
