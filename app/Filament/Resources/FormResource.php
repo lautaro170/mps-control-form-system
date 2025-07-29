@@ -129,7 +129,7 @@ class FormResource extends Resource
         return [
             'index' => Pages\ListForms::route('/'),
             'create' => Pages\CreateForm::route('/create'),
-            'edit' => Pages\EditForm::route('/{record}/edit'),
+            'edit' => Pages\EditFormCustomPage::route('/{record}/edit'),
         ];
     }
 }
