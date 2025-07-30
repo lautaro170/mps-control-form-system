@@ -66,12 +66,20 @@
         const survey = new Survey.Model(@json($jsonDefinition));
         const formId = {{ $formId }};
         const formValue = @json($formValue);
+        const lastSeenPage = "{{$lastSeenPage}}";
         console.log(formValue)
         if (formValue && formValue !== '{}') {
             try {
                 survey.data = JSON.parse(formValue);
             } catch (e) {
                 // fallback: ignore if invalid json
+            }
+        }
+        // Set initial page if lastSeenPage is set
+        if (lastSeenPage && lastSeenPage !== "") {
+            const pageIndex = survey.pages.findIndex(p => p.name === lastSeenPage);
+            if (pageIndex !== -1) {
+                survey.currentPageNo = pageIndex;
             }
         }
         let saveTimeout = null;
@@ -87,13 +95,17 @@
                 return;
             }
             isSaving = true;
+            const currentPageName = survey.currentPage?.name || '';
             fetch(`/forms/${formId}/update-json-value`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                body: JSON.stringify({ json_value: JSON.stringify(survey.data) })
+                body: JSON.stringify({
+                    json_value: JSON.stringify(survey.data),
+                    last_seen_page: currentPageName
+                })
             })
             .finally(() => {
                 isSaving = false;

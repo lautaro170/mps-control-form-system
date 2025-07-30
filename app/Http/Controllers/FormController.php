@@ -27,9 +27,12 @@ class FormController extends Controller
         // Validate the request data
         $request->validate([
             'json_value' => 'required|json',
+            'last_seen_page' => 'required|string'
         ]);
 
+
         $form->json_values = $request->input('json_value');
+        $form->last_seen_page = $request->input('last_seen_page');
         $form->save();
 
         return response()->json(['message' => 'Form updated successfully!']);

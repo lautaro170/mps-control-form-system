@@ -19,6 +19,7 @@ class EditFormCustomPage extends Page
         $this->jsonDefinition = $record->formTemplate->json_definition;
         $this->formId = $record->id;
         $this->formValue = $record->json_values ?? '{}';
+        $this->last_seen_page = $record->last_seen_page ?? "";
     }
 
     public function getViewData(): array
@@ -27,7 +28,7 @@ class EditFormCustomPage extends Page
             'jsonDefinition' => $this->jsonDefinition,
             'formId' => $this->formId,
             'formValue' => $this->formValue,
-
+            'lastSeenPage' => $this->last_seen_page,
         ]);
     }
 

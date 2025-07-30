@@ -29,6 +29,7 @@ class Form extends Model
         'description',
         'status',
         'json_values',
+        'last_seen_page',
         'created_by',
         'form_template_id',
         'client_id',
