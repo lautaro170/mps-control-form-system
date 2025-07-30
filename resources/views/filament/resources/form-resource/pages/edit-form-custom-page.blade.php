@@ -60,14 +60,13 @@
     <script type="text/javascript" src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
     <script src="https://unpkg.com/survey-core/survey.i18n.min.js"></script>
     <!-- SweetAlert2 Toast CDN -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         const survey = new Survey.Model(@json($jsonDefinition));
         const formId = {{ $formId }};
         const formValue = @json($formValue);
         const lastSeenPage = "{{$lastSeenPage}}";
-        console.log(formValue)
         if (formValue && formValue !== '{}') {
             try {
                 survey.data = JSON.parse(formValue);
@@ -143,6 +142,31 @@
             });
             document.getElementById('pageDropdown').addEventListener('change', function(e) {
                 survey.currentPageNo = parseInt(e.target.value);
+            });
+            // Use onCompleting to show confirmation before completing
+            survey.onCompleting.add(function(sender, options) {
+                if (window.__swalCompleting) return; // Prevent double popup
+                options.allowComplete = false;
+                window.__swalCompleting = true;
+                Swal.fire({
+                    title: '¿Completar formulario?',
+                    text: 'No podrás editarlo después de completar.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Completar',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        options.allowComplete = true;
+                        sender.completeLastPage();
+                    }
+                    window.__swalCompleting = false;
+                });
+            });
+            survey.onComplete.add(function(sender) {
+                // Prevent default SurveyJS "Thank you" page
+                sender.showCompletedPage = false;
+                setTimeout(() => { location.reload(); }, 100);
             });
         });
     </script>
