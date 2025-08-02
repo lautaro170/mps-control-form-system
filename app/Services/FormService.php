@@ -58,4 +58,10 @@ class FormService{
 
         return $form;
     }
+
+    public function generateFormPdf(\App\Models\Form $form, string $layout = 'default')
+    {
+        $pdfService = app(\App\Services\PdfService::class);
+        return $pdfService->generate($form, $layout);
+    }
 }

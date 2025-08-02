@@ -37,4 +37,18 @@ class FormController extends Controller
 
         return response()->json(['message' => 'Form updated successfully!']);
     }
+
+    public function downloadPdf(Form $form, FormService $formService)
+    {
+        return $formService->generateFormPdf($form);
+    }
+
+    public function previewPdf(Form $form, FormService $formService)
+    {
+        return view('pdf.form_default', [
+            'form' => $form,
+            'json_values' => json_decode($form->json_values, true),
+        ]);
+    }
 }
+
