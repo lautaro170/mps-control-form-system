@@ -25,7 +25,9 @@ class PdfService
         $pdf = Pdf::loadView($view, [
             'form' => $form,
             'json_values' => json_decode($form->json_values, true),
-        ]);
+            'formatted_form_id' => str_pad($form->id, 7, '0', STR_PAD_LEFT),
+            'formatted_date' => $form->created_at ? $form->created_at->format('d/m/Y') : '',
+        ])->setOptions(['isRemoteEnabled' => true]);
 
         // Set PDF options to remove margins
         $pdf->setPaper('A4', 'portrait');
