@@ -60,6 +60,14 @@ class FormService{
         return $form;
     }
 
+    public function markFormAsCompletedAndSent(\App\Models\Form $form): \App\Models\Form
+    {
+        $form->status = FormStatusEnum::COMPLETED_SENT;
+        $form->save();
+
+        return $form;
+    }
+
     public function generateFormPdf(\App\Models\Form $form, string $layout = 'default')
     {
         $pdfService = app(\App\Services\PdfService::class);

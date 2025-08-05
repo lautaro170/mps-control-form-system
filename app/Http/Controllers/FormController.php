@@ -62,6 +62,7 @@ class FormController extends Controller
 
         $mails = $request->input('mails');
         $formService->sendMails($form, $mails);
+        $formService->markFormAsCompletedAndSent($form);
 
         return response()->json(['message' => 'Emails sent successfully!']);
     }
