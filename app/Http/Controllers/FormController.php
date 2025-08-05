@@ -53,5 +53,18 @@ class FormController extends Controller
 
         ]);
     }
+
+    public function sendClientMail(Request $request, Form $form, FormService $formService){
+      /*  $request->validate([
+            'mails' => 'required|array',
+            ]);
+
+        $mails = $request->input('mails');
+        */
+        $mails = ["lautaroybarra1@gmail.com"];
+        $formService->sendMails($form, $mails);
+
+        return response()->json(['message' => 'Emails sent successfully!']);
+    }
 }
 

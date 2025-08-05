@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\FormStatusEnum;
 use App\Enums\FormTypeEnum;
+use App\Mail\FormToClient;
 use Illuminate\Validation\Rule;
 
 class FormService{
@@ -63,5 +64,15 @@ class FormService{
     {
         $pdfService = app(\App\Services\PdfService::class);
         return $pdfService->downloadPDF($form, $layout);
+    }
+
+    public function sendMails(\App\Models\Form $form, array $mails)
+    {
+        $mailable = new FormToClient($form);
+
+        foreach ($mails as $mail) {
+            \Mail::to($mail)->send($mailable);
+        }
+
     }
 }
