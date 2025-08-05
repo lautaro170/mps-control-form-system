@@ -16,6 +16,7 @@ class EditFormCustomPage extends Page
 
     public function mount(Form $record): void
     {
+        $this->record = $record;
         $this->jsonDefinition = $record->formTemplate->json_definition;
         $this->formId = $record->id;
         $this->formValue = $record->json_values ?? '{}';
@@ -25,6 +26,7 @@ class EditFormCustomPage extends Page
     public function getViewData(): array
     {
         return array_merge(parent::getViewData(), [
+            'form' => $this->record,
             'jsonDefinition' => $this->jsonDefinition,
             'formId' => $this->formId,
             'formValue' => $this->formValue,

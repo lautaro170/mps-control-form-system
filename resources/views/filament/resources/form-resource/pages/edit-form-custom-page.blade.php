@@ -67,6 +67,14 @@
         const formId = {{ $formId }};
         const formValue = @json($formValue);
         const lastSeenPage = "{{$lastSeenPage}}";
+        // Set SurveyJS to readOnly if form status is not 'pending'
+
+        const isReadOnly = "{{ $form->status->value ?? '' }}" !== 'pending';
+        if (isReadOnly) {
+            survey.readOnly = true;
+        }
+
+
         if (formValue && formValue !== '{}') {
             try {
                 survey.data = JSON.parse(formValue);
@@ -133,53 +141,58 @@
         document.addEventListener("DOMContentLoaded", function() {
             survey.render(document.getElementById("surveyContainer"));
             populateDropdown();
-            survey.onCurrentPageChanged.add(function() {
-                document.getElementById('pageDropdown').value = survey.currentPageNo;
-                saveSurveyData(); // Save immediately on page change
-            });
-            survey.onValueChanged.add(function() {
-                debouncedSave(); // Debounced save on value change
-            });
+            // Allow page navigation even in readOnly mode
             document.getElementById('pageDropdown').addEventListener('change', function(e) {
                 survey.currentPageNo = parseInt(e.target.value);
             });
-            // Use onCompleting to show confirmation before completing
-            survey.onCompleting.add(function(sender, options) {
-                if (window.__swalCompleting) return; // Prevent double popup
-                options.allowComplete = false;
-                window.__swalCompleting = true;
-                Swal.fire({
-                    title: '¿Completar formulario?',
-                    text: 'No podrás editarlo después de completar.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Completar',
-                    cancelButtonText: 'Cancelar',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        options.allowComplete = true;
-                        sender.completeLastPage();
-                    }
-                    window.__swalCompleting = false;
-                });
+            survey.onCurrentPageChanged.add(function() {
+                document.getElementById('pageDropdown').value = survey.currentPageNo;
             });
-            survey.onComplete.add(function(sender) {
-                // Prevent default SurveyJS "Thank you" page
-                sender.showCompletedPage = false;
-                // Notify the forms.complete-form route (PATCH method)
-                fetch('{{route('forms.complete-form', $formId)}}', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        json_value: JSON.stringify(survey.data)
-                    })
-                }).finally(() => {
-                    setTimeout(() => { location.reload(); }, 100);
+            // Only allow saving and completing if not readOnly
+            if (!isReadOnly) {
+                survey.onValueChanged.add(function() {
+                    debouncedSave(); // Debounced save on value change
                 });
-            });
+                survey.onCurrentPageChanged.add(function() {
+                    saveSurveyData(); // Save immediately on page change
+                });
+                survey.onCompleting.add(function(sender, options) {
+                    if (window.__swalCompleting) return; // Prevent double popup
+                    options.allowComplete = false;
+                    window.__swalCompleting = true;
+                    Swal.fire({
+                        title: '¿Completar formulario?',
+                        text: 'No podrás editarlo después de completar.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Completar',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            options.allowComplete = true;
+                            sender.completeLastPage();
+                        }
+                        window.__swalCompleting = false;
+                    });
+                });
+                survey.onComplete.add(function(sender) {
+                    // Prevent default SurveyJS "Thank you" page
+                    sender.showCompletedPage = false;
+                    // Notify the forms.complete-form route (PATCH method)
+                    fetch('{{route('forms.complete-form', $formId)}}', {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            json_value: JSON.stringify(survey.data)
+                        })
+                    }).finally(() => {
+                        setTimeout(() => { location.reload(); }, 100);
+                    });
+                });
+            }
         });
     </script>
 </x-filament-panels::page>
