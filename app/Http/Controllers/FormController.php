@@ -57,6 +57,7 @@ class FormController extends Controller
     public function sendClientMail(Request $request, Form $form, FormService $formService){
         $request->validate([
             'mails' => 'required|array',
+            'mails.*' => 'email',
         ]);
 
         $mails = $request->input('mails');
