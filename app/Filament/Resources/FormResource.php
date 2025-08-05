@@ -85,7 +85,16 @@ class FormResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Estado'),
+                    ->label('Estado')
+                    ->badge()
+                    ->formatStateUsing(fn($state) => $state?->label() ?? '')
+                    ->color(
+                        fn($state) => match ($state) {
+                        \App\Enums\FormStatusEnum::PENDING => 'gray',
+                        \App\Enums\FormStatusEnum::COMPLETED_NOT_SENT => 'warning',
+                        \App\Enums\FormStatusEnum::COMPLETED_SENT => 'success',
+                        default => null,
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Creado el')
                     ->dateTime('d F Y')
