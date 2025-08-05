@@ -8,15 +8,14 @@ use App\Models\Form;
 class PdfService
 {
     /**
-     * Generate a PDF for a form result.
+     * Generate the raw PDF content for a form result.
      *
      * @param Form $form
      * @param string $layout
-     * @return \Illuminate\Http\Response
+     * @return string
      */
-    public function generate(Form $form, string $layout = 'default')
+    public function generatePdfContent(Form $form, string $layout = 'default')
     {
-        // Select the correct Blade view based on layout
         $view = "pdf.form_{$layout}";
         if (!view()->exists($view)) {
             $view = 'pdf.form_default';
@@ -29,7 +28,6 @@ class PdfService
             'formatted_date' => $form->created_at ? $form->created_at->format('d/m/Y') : '',
         ])->setOptions(['isRemoteEnabled' => true]);
 
-        // Set PDF options to remove margins
         $pdf->setPaper('A4', 'portrait');
         $pdf->setOptions([
             'margin_top' => 0,
@@ -38,7 +36,23 @@ class PdfService
             'margin_left' => 0,
         ]);
 
+        return $pdf->output();
+    }
+
+    /**
+     * Download a PDF for a form result.
+     *
+     * @param Form $form
+     * @param string $layout
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadPDF(Form $form, string $layout = 'default')
+    {
         $filename = 'form_' . $form->id . '.pdf';
-        return $pdf->download($filename);
+        $pdfContent = $this->generatePdfContent($form, $layout);
+        return response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\""
+        ]);
     }
 }
