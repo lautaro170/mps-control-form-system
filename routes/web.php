@@ -20,7 +20,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('forms/{form}/test-pdf', [\App\Http\Controllers\FormController::class, 'previewPdf'])
         ->name('forms.test-pdf');
 
-    Route::get('forms/{form}/send-mail', [\App\Http\Controllers\FormController::class, 'sendClientMail'])
+    Route::post('forms/{form}/send-mail', [\App\Http\Controllers\FormController::class, 'sendClientMail'])
         ->name('forms.send-client-mail');
 });
 

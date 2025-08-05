@@ -69,10 +69,6 @@ class FormService{
     public function sendMails(\App\Models\Form $form, array $mails)
     {
         $mailable = new FormToClient($form);
-
-        foreach ($mails as $mail) {
-            \Mail::to($mail)->send($mailable);
-        }
-
+        \Mail::to($mails)->send($mailable);
     }
 }
