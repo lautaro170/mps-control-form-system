@@ -166,7 +166,19 @@
             survey.onComplete.add(function(sender) {
                 // Prevent default SurveyJS "Thank you" page
                 sender.showCompletedPage = false;
-                setTimeout(() => { location.reload(); }, 100);
+                // Notify the forms.complete-form route (PATCH method)
+                fetch('{{route('forms.complete-form', $formId)}}', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        json_value: JSON.stringify(survey.data)
+                    })
+                }).finally(() => {
+                    setTimeout(() => { location.reload(); }, 100);
+                });
             });
         });
     </script>
