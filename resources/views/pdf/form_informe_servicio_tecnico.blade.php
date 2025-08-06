@@ -1,6 +1,3 @@
-@php
-    $json_values = json_decode(file_get_contents(__FILE__), true);
-@endphp
 <!DOCTYPE html>
 <html lang="es" style="border: 1px solid #000; box-sizing: border-box; width: calc(100% - 40px); height: calc(100% - 40px); margin: 20px;">
 <head>
@@ -64,7 +61,7 @@
         .description-box {
             border: 2px solid #333;
             background: #f9f9f9;
-            height: 320px;
+            height: 310px;
             padding: 10px;
             font-size: 13px;
             margin-bottom: 16px;
@@ -77,7 +74,7 @@
         .observations-box {
             border: 1px solid #333;
             background: #f3f3f3;
-            height: 120px;
+            height: 110px;
             padding: 8px;
             font-size: 12px;
             margin-bottom: 18px;
@@ -149,13 +146,13 @@
     <table class="info-table">
         <tr>
             <th>Cliente</th>
-            <td> Petrogás S.A.I.C.y.F</td>
+            <td> {{$form->client->name}}</td>
             <th>Fecha</th>
             <td>06/08/2025</td>
         </tr>
         <tr>
             <th>Modelo</th>
-            <td>{{ $json_values['modelo'] ?? '' }}</td>
+            <td>{{ $json_values['modelo']  }}</td>
             <th>N° de Serie</th>
             <td>{{ $json_values['nro_de_serie'] ?? '' }}</td>
         </tr>
@@ -169,11 +166,11 @@
     <!-- Trabajo Efectuado / Trabajo a Efectuar checkboxes -->
     <div style="margin-bottom: 10px; text-align: center;">
         <label style="margin-right: 24px; font-size: 15px;">
-            <input type="checkbox" style="width: 16px; height: 16px; vertical-align: middle;" {{ (isset($json_values['trabajo_tipo']) && $json_values['trabajo_tipo'] === 'efectuado') ? 'checked' : '' }} disabled>
+            <input type="checkbox" style="width: 16px; height: 16px; vertical-align: middle;" {{ (isset($json_values['estado']) && $json_values['estado'] === 'trabajo_efectuado') ? 'checked' : '' }} >
             Trabajo Efectuado
         </label>
         <label style="font-size: 15px;">
-            <input type="checkbox" style="width: 16px; height: 16px; vertical-align: middle;" {{ (isset($json_values['trabajo_tipo']) && $json_values['trabajo_tipo'] === 'a_efectuar') ? 'checked' : '' }} disabled>
+            <input type="checkbox" style="width: 16px; height: 16px; vertical-align: middle;" {{ (isset($json_values['estado']) && $json_values['estado'] === 'trabajo_a_efectuar') ? 'checked' : '' }}>
             Trabajo a Efectuar
         </label>
     </div>
@@ -186,21 +183,36 @@
     <div class="observations-box">
         {{ $json_values['observaciones_varios'] ?? '' }}
     </div>
-    <div class="signatures">
-        <div class="signature-block">
-            <div class="signature-title">Técnico MPS Control</div>
-            <div class="signature-name">{{ $json_values['tecnico_que_realiza_la_prueba_nombre'] ?? '' }}</div>
-            <div class="signature-line"></div>
-            <div class="signature-label">Firma</div>
-        </div>
-        <div class="signature-block">
-            <div class="signature-title">Responsable del Cliente</div>
-            <div class="signature-name">{{ $json_values['responsable_del_cliente'] ?? '' }}</div>
-            <div class="signature-line"></div>
-            <div class="signature-label">Firma</div>
-        </div>
-    </div>
+    <table style="width: 100%; margin-bottom: 10px;">
+        <tr>
+            <td style="width: 50%; text-align: center; vertical-align: top; border: none;">
+                <div style="font-weight: bold; font-size: 13px; margin-bottom: 2px;">Técnico MPS Control</div>
+                <div style="font-size: 12px; margin-bottom: 6px;">{{ $json_values['tecnico_que_realiza_la_prueba_nombre'] ?? '' }}</div>
+                <div style="border-bottom: 1px solid #666; background-color: #f9f9f9; min-width: 180px; min-height: 40px; display: inline-block;">
+                    @if(!empty($json_values['tecnico_que_realiza_la_prueba_firma']))
+                        <img src="{{ $json_values['tecnico_que_realiza_la_prueba_firma'] }}" alt="Firma Técnico" style="max-height: 38px; max-width: 170px; display: block; margin: 0 auto;" />
+                    @else
+                        <span style="font-size: 9px; color: #999;">Canvas de Firma</span>
+                    @endif
+                </div>
+                <div style="font-size: 10px; color: #666; margin-top: 2px;">Firma</div>
+            </td>
+            <td style="width: 50%; text-align: center; vertical-align: top; border: none;">
+                <div style="font-weight: bold; font-size: 13px; margin-bottom: 2px;">Responsable del Cliente</div>
+                <div style="font-size: 12px; margin-bottom: 6px;">{{ $json_values['responsable_del_cliente_nombre'] ?? '' }}</div>
+                <div style="border-bottom: 1px solid #666; background-color: #f9f9f9; min-width: 180px; min-height: 40px; display: inline-block;">
+                    @if(!empty($json_values['responsable_del_cliente_firma']))
+                        <img src="{{ $json_values['responsable_del_cliente_firma'] }}" alt="Firma Cliente" style="max-height: 38px; max-width: 170px; display: block; margin: 0 auto;" />
+                    @else
+                        <span style="font-size: 9px; color: #999;">Canvas de Firma</span>
+                    @endif
+                </div>
+                <div style="font-size: 10px; color: #666; margin-top: 2px;">Firma</div>
+            </td>
+        </tr>
+    </table>
 </div>
+
 <!-- Contact Information Footer -->
 <div class="footer" style="width: 100%; text-align: center; font-size: 12px; margin-top: 18px; border-top: 1px solid #333; padding-top: 8px; box-sizing: border-box;">
     <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo.webp'))) }}" alt="Logo" style="max-width: 80px; max-height: 30px; display: block; margin: 0 auto 8px auto;" />
