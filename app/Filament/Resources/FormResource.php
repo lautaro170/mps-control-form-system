@@ -185,4 +185,16 @@ class FormResource extends Resource
             'edit' => Pages\EditFormCustomPage::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        #if user is not admin, filter by user_id
+        if( !auth()->user()?->hasRole('Admin') ){
+            return parent::getEloquentQuery()
+                ->where('user_id', auth()->id());
+        }
+
+        return parent::getEloquentQuery();
+    }
+
 }
