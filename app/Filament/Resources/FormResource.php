@@ -24,6 +24,8 @@ class FormResource extends Resource
     protected static ?string $navigationLabel = 'Formularios';
     protected static ?string $pluralModelLabel = 'Formularios';
     protected static ?string $modelLabel = 'Formulario';
+    protected static ?int $navigationSort = -1000;
+
     public static function form(Form $form): Form
     {
         return $form
