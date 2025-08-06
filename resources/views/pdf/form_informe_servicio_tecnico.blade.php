@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" style="border: 1px solid #000; box-sizing: border-box; width: calc(100% - 40px); height: calc(100% - 40px); margin: 20px;">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Informe de Servicio Técnico</title>
     <style>
         @page {
-            margin: 0;
+            margin: 20px;
         }
         html, body {
             width: 100%;
@@ -17,13 +17,13 @@
             font-size: 12px;
             margin: 0;
             padding: 0;
-            border: none;
+            border: 1px solid #000;
             width: 100%;
             height: 100%;
             box-sizing: border-box;
         }
         .container {
-            margin: 12px;
+            margin: 20px;
             padding: 0;
         }
         .header {
@@ -59,9 +59,9 @@
             margin-bottom: 4px;
         }
         .description-box {
-            border: 2px solid #333;
+            border: 1px solid #333;
             background: #f9f9f9;
-            height: 310px;
+            height: 325px;
             padding: 10px;
             font-size: 13px;
             margin-bottom: 16px;
@@ -74,7 +74,7 @@
         .observations-box {
             border: 1px solid #333;
             background: #f3f3f3;
-            height: 110px;
+            height: 125px;
             padding: 8px;
             font-size: 12px;
             margin-bottom: 18px;
@@ -215,7 +215,9 @@
 
 <!-- Contact Information Footer -->
 <div class="footer" style="width: 100%; text-align: center; font-size: 12px; margin-top: 18px; border-top: 1px solid #333; padding-top: 8px; box-sizing: border-box;">
-    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo.webp'))) }}" alt="Logo" style="max-width: 80px; max-height: 30px; display: block; margin: 0 auto 8px auto;" />
+    <div style="width: 100%; text-align: center;">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo.webp'))) }}" alt="Logo" style="height: 35px; margin: 0 auto 8px auto; display: block;" />
+    </div>
     <span style="margin-right: 12px; vertical-align: middle;">
         <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/icons/whatsapp.png'))) }}" alt="Logo" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 4px;" /> 11 6979-4400
     </span>
