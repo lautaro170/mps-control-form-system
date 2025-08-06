@@ -64,10 +64,11 @@
         .description-box {
             border: 2px solid #333;
             background: #f9f9f9;
-            min-height: 120px;
+            height: 320px;
             padding: 10px;
             font-size: 13px;
             margin-bottom: 16px;
+            overflow: hidden;
         }
         .separator {
             border-top: 2px solid #333;
@@ -76,10 +77,11 @@
         .observations-box {
             border: 1px solid #333;
             background: #f3f3f3;
-            min-height: 40px;
+            height: 120px;
             padding: 8px;
             font-size: 12px;
             margin-bottom: 18px;
+            overflow: hidden;
         }
         .signatures {
             display: flex;
@@ -117,6 +119,9 @@
             font-size: 12px;
             color: #333;
             margin-top: 0;
+            border-top: 1px solid #333;
+            padding-top: 8px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -197,7 +202,8 @@
     </div>
 </div>
 <!-- Contact Information Footer -->
-<div style="width: 100%; text-align: center; font-size: 12px; margin-top: 18px;">
+<div class="footer" style="width: 100%; text-align: center; font-size: 12px; margin-top: 18px; border-top: 1px solid #333; padding-top: 8px; box-sizing: border-box;">
+    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/logo.webp'))) }}" alt="Logo" style="max-width: 80px; max-height: 30px; display: block; margin: 0 auto 8px auto;" />
     <span style="margin-right: 12px; vertical-align: middle;">
         <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('images/icons/whatsapp.png'))) }}" alt="Logo" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 4px;" /> 11 6979-4400
     </span>
