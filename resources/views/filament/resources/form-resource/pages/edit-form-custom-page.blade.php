@@ -49,18 +49,19 @@
             }
         }
     </style>
-    <div class="dropdown-group">
-        <label for="pageDropdown" class="dropdown-label">Ir a la página</label>
-        <select id="pageDropdown" class="modern-dropdown"></select>
-    </div>
-    <div id="surveyContainer"></div>
-    <!-- SurveyJS CDN -->
     <link href="https://unpkg.com/survey-core/survey-core.min.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/survey-core/survey.core.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
     <script src="https://unpkg.com/survey-core/survey.i18n.min.js"></script>
     <!-- SweetAlert2 Toast CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <div wire:ignore class="dropdown-group">
+        <label for="pageDropdown" class="dropdown-label">Ir a la página</label>
+        <select id="pageDropdown" class="modern-dropdown"></select>
+    </div>
+    <div wire:ignore id="surveyContainer"></div>
+    <!-- SurveyJS CDN -->
 
     <script>
         const survey = new Survey.Model(@json($jsonDefinition));
