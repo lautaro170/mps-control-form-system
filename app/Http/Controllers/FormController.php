@@ -45,7 +45,9 @@ class FormController extends Controller
 
     public function previewPdf(Form $form, FormService $formService)
     {
-        return view('pdf.form_default', [
+
+        $view = 'pdf.form_' . $form->type->value;
+        return view($view, [
             'form' => $form,
             'json_values' => json_decode($form->json_values, true),
             'formatted_form_id' => str_pad($form->id, 7, '0', STR_PAD_LEFT),

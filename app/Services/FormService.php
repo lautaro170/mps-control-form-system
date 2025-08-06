@@ -68,10 +68,10 @@ class FormService{
         return $form;
     }
 
-    public function generateFormPdf(\App\Models\Form $form, string $layout = 'default')
+    public function generateFormPdf(\App\Models\Form $form)
     {
         $pdfService = app(\App\Services\PdfService::class);
-        return $pdfService->downloadPDF($form, $layout);
+        return $pdfService->downloadPDF($form);
     }
 
     public function sendMails(\App\Models\Form $form, array $mails)

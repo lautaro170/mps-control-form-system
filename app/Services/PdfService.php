@@ -14,8 +14,9 @@ class PdfService
      * @param string $layout
      * @return string
      */
-    public function generatePdfContent(Form $form, string $layout = 'default')
+    public function generatePdfContent(Form $form)
     {
+        $layout = $form->type->value ?? 'default';
         $view = "pdf.form_{$layout}";
         if (!view()->exists($view)) {
             $view = 'pdf.form_default';
@@ -46,10 +47,10 @@ class PdfService
      * @param string $layout
      * @return \Illuminate\Http\Response
      */
-    public function downloadPDF(Form $form, string $layout = 'default')
+    public function downloadPDF(Form $form)
     {
         $filename = 'form_' . $form->id . '.pdf';
-        $pdfContent = $this->generatePdfContent($form, $layout);
+        $pdfContent = $this->generatePdfContent($form);
         return response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => "attachment; filename=\"{$filename}\""
