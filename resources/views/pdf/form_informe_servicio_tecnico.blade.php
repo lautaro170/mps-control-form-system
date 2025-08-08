@@ -152,7 +152,7 @@
         </tr>
         <tr>
             <th>Modelo</th>
-            <td>{{ $json_values['modelo']  }}</td>
+            <td>{{ $json_values['modelo'] ?? '' }}</td>
             <th>N° de Serie</th>
             <td>{{ $json_values['nro_de_serie'] ?? '' }}</td>
         </tr>
