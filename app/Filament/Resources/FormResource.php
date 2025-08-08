@@ -120,47 +120,49 @@ class FormResource extends Resource
                     ->options(collect(\App\Enums\FormStatusEnum::cases())->mapWithKeys(fn($case) => [$case->value => $case->label()])->toArray()),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('download')
-                    ->label('Descargar')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn($record) => route('forms.download-pdf', $record))
-                    ->openUrlInNewTab(),
-                Tables\Actions\Action::make('sendMail')
-                    ->label('Enviar Mail')
-                    ->icon('heroicon-o-paper-airplane')
-                    ->form(fn($record) => [
-                        Forms\Components\TextInput::make('mails')
-                            ->label('Emails')
-                            ->default($record->client?->defaultEmail)
-                            ->required()
-                            ->datalist([$record->client?->defaultEmail])
-                            ->helperText('Separar múltiples emails con coma')
-                            ->rule(    fn (): Closure => function (string $attribute, $value, Closure $fail) {
-                                $mails = array_map('trim', explode(',', $value));
-                                foreach ($mails as $mail) {
-                                    if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-                                        $fail("El email '$mail' no es válido.");
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\Action::make('download')
+                        ->label('Descargar')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->url(fn($record) => route('forms.download-pdf', $record))
+                        ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('sendMail')
+                        ->label('Enviar Mail')
+                        ->icon('heroicon-o-paper-airplane')
+                        ->form(fn($record) => [
+                            Forms\Components\TextInput::make('mails')
+                                ->label('Emails')
+                                ->default($record->client?->defaultEmail)
+                                ->required()
+                                ->datalist([$record->client?->defaultEmail])
+                                ->helperText('Separar múltiples emails con coma')
+                                ->rule(    fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                                    $mails = array_map('trim', explode(',', $value));
+                                    foreach ($mails as $mail) {
+                                        if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+                                            $fail("El email '$mail' no es válido.");
+                                        }
                                     }
-                                }
-                            }),
-                    ])
-                    ->visible(fn($record) => $record->status !== \App\Enums\FormStatusEnum::PENDING)
-                    ->action(function (array $data, $record) {
-                        $mails = array_map('trim', explode(',', $data['mails']));
-                        $response = app(\App\Http\Controllers\FormController::class)->sendClientMail(request()->merge(['mails' => $mails]), $record, app(\App\Services\FormService::class));
-                        if ($response->getStatusCode() === 200) {
-                            \Filament\Notifications\Notification::make()
-                                ->title('Email enviado correctamente!')
-                                ->success()
-                                ->send();
-                        } else {
-                            \Filament\Notifications\Notification::make()
-                                ->title('Error al enviar el email')
-                                ->danger()
-                                ->send();
-                        }
-                    }),
+                                }),
+                        ])
+                        ->visible(fn($record) => $record->status !== \App\Enums\FormStatusEnum::PENDING)
+                        ->action(function (array $data, $record) {
+                            $mails = array_map('trim', explode(',', $data['mails']));
+                            $response = app(\App\Http\Controllers\FormController::class)->sendClientMail(request()->merge(['mails' => $mails]), $record, app(\App\Services\FormService::class));
+                            if ($response->getStatusCode() === 200) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Email enviado correctamente!')
+                                    ->success()
+                                    ->send();
+                            } else {
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Error al enviar el email')
+                                    ->danger()
+                                    ->send();
+                            }
+                        }),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
