@@ -48,28 +48,54 @@
                 width: 100%;
             }
         }
+        html.dark .dropdown-label {
+            color: #fff;
+        }
+        html.dark .modern-dropdown {
+            background: #23272f;
+            color: #f3f4f6;
+            border-color: #444c56;
+        }
+        html.dark .modern-dropdown option {
+            background: #23272f;
+            color: #f3f4f6;
+        }
     </style>
     <link href="https://unpkg.com/survey-core/survey-core.min.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/survey-core/survey.core.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
     <script src="https://unpkg.com/survey-core/survey.i18n.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/survey-core/themes/default-dark.min.js"></script>
+    <!-- ... -->
+
     <!-- SweetAlert2 Toast CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <div wire:ignore class="dropdown-group">
         <label for="pageDropdown" class="dropdown-label">Ir a la página</label>
-        <select id="pageDropdown" class="modern-dropdown"></select>
+        <select id="pageDropdown" class="modern-dropdown fi-input fi-select fi-dark:bg-gray-900 fi-dark:text-gray-100 fi-dark:border-gray-700 fi-dark:focus:bg-gray-800 fi-dark:focus:border-primary-500"></select>
     </div>
     <div wire:ignore id="surveyContainer"></div>
     <!-- SurveyJS CDN -->
 
     <script>
+        // Detect Filament theme and set SurveyJS theme
+        function getSurveyTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                return SurveyTheme.DefaultDark;
+            }
+            return '';
+        }
+
         const survey = new Survey.Model(@json($jsonDefinition));
+
+        survey.applyTheme(getSurveyTheme());
+
         const formId = {{ $formId }};
         const formValue = @json($formValue);
         const lastSeenPage = "{{$lastSeenPage}}";
         // Set SurveyJS to readOnly if form status is not 'pending'
-
         const isReadOnly = "{{ $form->status->value ?? '' }}" !== 'pending';
         if (isReadOnly) {
             survey.readOnly = true;
