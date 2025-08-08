@@ -40,6 +40,7 @@ class FormResource extends Resource
                     ->relationship('client', 'name')
                     ->required()
                     ->preload()
+                    ->searchable()
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
                             ->label('Nombre')
