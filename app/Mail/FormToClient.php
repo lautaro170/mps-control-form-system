@@ -31,7 +31,7 @@ class FormToClient extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Form To Client',
+            subject: 'MPS Controls - ' . ($this->form->type->label() ?? ""),
         );
     }
 
