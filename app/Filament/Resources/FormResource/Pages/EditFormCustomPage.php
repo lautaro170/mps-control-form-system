@@ -87,6 +87,6 @@ class EditFormCustomPage extends Page
 
     public function getTitle(): string
     {
-        return 'Formulario: ' . $this->getRecord()->formTemplate->name . ' - ' . $this->getRecord()->client?->name;
+        return $this->getRecord()->client?->name . ' - ' .$this->getRecord()->type->label();
     }
 }
