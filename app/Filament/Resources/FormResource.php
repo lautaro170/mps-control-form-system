@@ -47,7 +47,6 @@ class FormResource extends Resource
                         Forms\Components\TextInput::make('defaultEmail')
                             ->label('Email')
                             ->email()
-                            ->required(),
                     ]),
 
                 Forms\Components\TextInput::make('description')
