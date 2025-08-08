@@ -148,7 +148,7 @@
             <th>Cliente</th>
             <td> {{$form->client->name}}</td>
             <th>Fecha</th>
-            <td>06/08/2025</td>
+            <td>{{$formatted_date}}</td>
         </tr>
         <tr>
             <th>Modelo</th>
