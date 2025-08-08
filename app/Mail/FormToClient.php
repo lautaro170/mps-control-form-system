@@ -54,7 +54,8 @@ class FormToClient extends Mailable
     {
         $pdfService = app(PdfService::class);
         $pdfContent = $pdfService->generatePdfContent($this->form);
-        $filename = 'form_' . $this->form->id . '.pdf';
+        $formatted_id = str_pad($this->form->id, 7, '0', STR_PAD_LEFT);
+        $filename = "formulario_$formatted_id.pdf";
 
         return [
             \Illuminate\Mail\Mailables\Attachment::fromData(

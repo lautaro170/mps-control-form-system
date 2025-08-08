@@ -49,7 +49,8 @@ class PdfService
      */
     public function downloadPDF(Form $form)
     {
-        $filename = 'form_' . $form->id . '.pdf';
+        $formatted_id = str_pad($form->id, 7, '0', STR_PAD_LEFT);
+        $filename = "formulario_$formatted_id.pdf";
         $pdfContent = $this->generatePdfContent($form);
         return response($pdfContent, 200, [
             'Content-Type' => 'application/pdf',
