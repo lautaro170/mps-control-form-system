@@ -10,13 +10,157 @@ class FormTemplatesSeeder extends Seeder
 {
     public function run(): void
     {
-
-        $formTemplates =
+        $formTemplates = [
             [
-                [
-                    "description" => 'Este es un formulario de ejemplo para demostrar la funcionalidad del sistema.',
-                    "type" => FormTypeEnum::QUALITY->value,
-                    "json_definition" => '{
+                "id" => 1,
+                "description" => 'Informe de Servicio tecnico.',
+                "type" => FormTypeEnum::INFORME_SERVICIO_TECNICO->value,
+                "json_definition" => '{
+  "id": 1,
+  "locale": "es",
+  "pages": [
+    {
+      "name": "page4",
+      "title": {
+        "es": "Datos Generales"
+      },
+      "elements": [
+        {
+          "type": "text",
+          "name": "modelo",
+          "title": {
+            "es": "Modelo"
+          }
+        },
+        {
+          "type": "text",
+          "name": "nro_de_serie",
+          "title": {
+            "es": "N° de Serie"
+          }
+        },
+        {
+          "type": "text",
+          "name": "horas_km",
+          "title": {
+            "es": "Horas / Km"
+          }
+        },
+        {
+          "type": "text",
+          "name": "arreglo",
+          "title": {
+            "es": "Arreglo"
+          }
+        }
+      ]
+    },
+    {
+      "name": "page2",
+      "title": {
+        "es": "Descripción del Trabajo"
+      },
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "estado",
+          "title": {
+            "es": "Estado"
+          },
+          "choices": [
+            {
+              "value": "trabajo_efectuado",
+              "text": {
+                "es": "Trabajo Efectuado"
+              }
+            },
+            {
+              "value": "trabajo_a_efectuar",
+              "text": {
+                "es": "Trabajo a Efectuar"
+              }
+            }
+          ]
+        },
+        {
+          "type": "comment",
+          "name": "descripcion_del_trabajo",
+          "title": {
+            "es": "Descripción del Trabajo"
+          }
+        }
+      ]
+    },
+    {
+      "name": "page1",
+      "title": {
+        "es": "Observaciones"
+      },
+      "elements": [
+        {
+          "type": "comment",
+          "name": "observaciones_varios",
+          "title": {
+            "es": "Observaciones / Varios"
+          }
+        }
+      ]
+    },
+    {
+      "name": "page3",
+      "title": "Responsables",
+      "elements": [
+        {
+          "type": "panel",
+          "name": "tecnico_que_realiza_la_prueba",
+          "title": {
+            "default": "Técnico que realiza la prueba",
+            "es": "Técnico "
+          },
+          "elements": [
+            {
+              "type": "text",
+              "name": "tecnico_que_realiza_la_prueba_nombre",
+              "title": "Nombre Completo"
+            },
+            {
+              "type": "signaturepad",
+              "name": "tecnico_que_realiza_la_prueba_firma",
+              "title": "Firma",
+              "placeholder": "Firma aquí"
+            }
+          ]
+        },
+        {
+          "type": "panel",
+          "name": "panel2",
+          "title": "Responsable del cliente",
+          "elements": [
+            {
+              "type": "text",
+              "name": "responsable_del_cliente_nombre",
+              "title": "Nombre Completo"
+            },
+            {
+              "type": "signaturepad",
+              "name": "responsable_del_cliente_firma",
+              "title": "Firma",
+              "placeholder": "Firma aquí"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "headerView": "advanced"
+}',
+            ],
+            [
+                "id" => 2,
+                "description" => 'Este es un formulario de ejemplo para demostrar la funcionalidad del sistema.',
+                "type" => FormTypeEnum::SERVICIO_TECNICO_GRUPO_ELECTROGENO->value,
+                "json_definition" => '{
+  "id": 2,
   "locale": "es",
   "pages": [
     {
@@ -501,13 +645,14 @@ class FormTemplatesSeeder extends Seeder
   ],
   "headerView": "advanced"
 }',
-                ],
-            ];
+            ],
+        ];
 
         foreach ($formTemplates as $formTemplate) {
             \App\Models\FormTemplate::updateOrCreate(
-                ['description' => $formTemplate['description']],
+                ['id' => $formTemplate['id']],
                 [
+                    'description' => $formTemplate['description'],
                     'type' => $formTemplate['type'],
                     'json_definition' => $formTemplate['json_definition'],
                 ]

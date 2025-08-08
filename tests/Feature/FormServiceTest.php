@@ -101,7 +101,7 @@ class FormServiceTest extends TestCase
         $service = new FormService();
         $data = [
             'client_id' => 'not-an-integer',
-            'form_type' => FormTypeEnum::QUALITY->value,
+            'form_type' => FormTypeEnum::SERVICIO_TECNICO_GRUPO_ELECTROGENO->value,
             'description' => 'Test description',
         ];
         $this->expectException(\Illuminate\Validation\ValidationException::class);

@@ -18,7 +18,7 @@ class FormTemplateFactory extends Factory
     {
         return [
             'description' => $this->faker->sentence(),
-            'type' => \App\Enums\FormTypeEnum::QUALITY->value,
+            'type' => \App\Enums\FormTypeEnum::SERVICIO_TECNICO_GRUPO_ELECTROGENO->value,
             'json_definition' => json_encode([
                 'title' => $this->faker->words(3, true),
                 'description' => $this->faker->sentence(),
