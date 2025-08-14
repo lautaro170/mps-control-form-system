@@ -39,7 +39,7 @@
         <td style="font-size: 13px;">Fecha: {{$formatted_date}}</td>
     </tr>
     <tr>
-        <td>Horas uso {{ $json_values['question2'] ?? '' }} </td>
+        <td>Horas uso {{ $json_values['horas_uso'] ?? '' }} </td>
     </tr>
     <tr>
         <td rowspan="2" style="font-size: 14px">sma: {{ $json_values['cliente_smo'] ?? '' }}</td>
