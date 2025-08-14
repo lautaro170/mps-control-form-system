@@ -4,7 +4,7 @@ return [
     'name' => 'MPS Controls',
     'manifest' => [
         'name' => env('APP_NAME', 'MPS Controls'),
-        'short_name' => 'PWA',
+        'short_name' => 'MPS Controls',
         'start_url' => '/',
         'background_color' => '#ffffff',
         'theme_color' => '#000000',
