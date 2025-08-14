@@ -131,12 +131,13 @@
             isSaving = true;
             const currentPageName = survey.currentPage?.name || '';
             fetch(`/forms/${formId}/update-json-value`, {
-                method: 'PATCH',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify({
+                    _method: 'PATCH',
                     json_value: JSON.stringify(survey.data),
                     last_seen_page: currentPageName
                 })
@@ -207,12 +208,13 @@
                     sender.showCompletedPage = false;
                     // Notify the forms.complete-form route (PATCH method)
                     fetch('{{route('forms.complete-form', $formId)}}', {
-                        method: 'PATCH',
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         body: JSON.stringify({
+                            _method: 'PATCH',
                             json_value: JSON.stringify(survey.data)
                         })
                     }).finally(() => {
