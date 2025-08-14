@@ -1,5 +1,5 @@
 <div style="text-align: center; margin-bottom: 20px;">
-    <img src="{{ asset('images/logo.webp') }}" alt="MPS Control" style="max-width: 200px;">
+    <img src="{{ asset('images/logo.png') }}" alt="MPS Control" style="max-width: 200px;">
 </div>
 
 <p>Estimado/a,</p>
